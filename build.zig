@@ -34,12 +34,14 @@ pub fn build(b: *std.Build) void {
         .files = srcs,
     });
 
+    var harfbuzz_dep: ?*std.Build.Dependency = null;
+
     if (harfbuzz_enabled) {
-        const harfbuzz_dep = b.dependency("harfbuzz", .{
+        harfbuzz_dep = b.dependency("harfbuzz", .{
             .target = target,
             .optimize = optimize,
         });
-        mod.linkLibrary(harfbuzz_dep.artifact("harfbuzz"));
+        mod.linkLibrary(harfbuzz_dep.?.artifact("harfbuzz"));
         mod.addCMacro("TTF_USE_HARFBUZZ", "1");
     }
 
@@ -53,8 +55,8 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
         .preferred_linkage = preferred_linkage,
-    }).artifact("SDL3");
-    mod.linkLibrary(sdl);
+    });
+    mod.linkLibrary(sdl.artifact("SDL3"));
 
     lib.installHeadersDirectory(upstream.path("include"), "", .{});
 
@@ -63,10 +65,16 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    translate_c.addIncludePath(sdl.path("include"));
+    if (harfbuzz_dep != null)
+        translate_c.addIncludePath(harfbuzz_dep.?.path("src"));
+    translate_c.addIncludePath(freetype_dep.path("include"));
     translate_c.addIncludePath(upstream.path("include"));
 
     const ttf_mod = translate_c.addModule("sdl_ttf");
     ttf_mod.linkLibrary(lib);
+
+    b.installArtifact(lib);
 }
 
 const srcs: []const []const u8 = &.{
