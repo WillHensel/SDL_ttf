@@ -58,7 +58,15 @@ pub fn build(b: *std.Build) void {
 
     lib.installHeadersDirectory(upstream.path("include"), "", .{});
 
-    b.installArtifact(lib);
+    const translate_c = b.addTranslateC(.{
+        .root_source_file = upstream.path("include/SDL_ttf.h"),
+        .target = target,
+        .optimize = optimize,
+    });
+    translate_c.addIncludePath(upstream.path("include"));
+
+    const ttf_mod = translate_c.addModule("sdl_ttf");
+    ttf_mod.linkLibrary(lib);
 }
 
 const srcs: []const []const u8 = &.{
