@@ -59,7 +59,7 @@ pub fn build(b: *std.Build) void {
     lib.installHeadersDirectory(upstream.path("include"), "", .{});
 
     const translate_c = b.addTranslateC(.{
-        .root_source_file = upstream.path("include/SDL_ttf.h"),
+        .root_source_file = upstream.path("include/SDL_ttf/SDL_ttf.h"),
         .target = target,
         .optimize = optimize,
     });
