@@ -56,12 +56,13 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
         .preferred_linkage = preferred_linkage,
     });
-    mod.linkLibrary(sdl.artifact("SDL3"));
+    const sdlArtifact = sdl.artifact("SDL3");
+    mod.linkLibrary(sdlArtifact);
 
     lib.installHeadersDirectory(upstream.path("include"), "", .{});
 
     const translate_c = b.addTranslateC(.{
-        .root_source_file = upstream.path("include/SDL_ttf/SDL_ttf.h"),
+        .root_source_file = upstream.path("include/SDL3_ttf/SDL_ttf.h"),
         .target = target,
         .optimize = optimize,
     });
@@ -72,9 +73,29 @@ pub fn build(b: *std.Build) void {
     translate_c.addIncludePath(upstream.path("include"));
 
     const ttf_mod = translate_c.addModule("sdl_ttf");
+    ttf_mod.linkLibrary(sdlArtifact);
     ttf_mod.linkLibrary(lib);
 
     b.installArtifact(lib);
+
+    const example = b.addExecutable(.{
+        .name = "example",
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("src/example.zig"),
+            .target = target,
+            .optimize = optimize,
+        }),
+    });
+    example.use_lld = true;
+    example.use_llvm = true;
+    example.root_module.addImport("sdl3_ttf", ttf_mod);
+
+    const build_example_step = b.step("example", "Build the example app");
+    build_example_step.dependOn(&example.step);
+
+    const run_example = b.addRunArtifact(example);
+    const run_step = b.step("run-example", "Run the example app");
+    run_step.dependOn(&run_example.step);
 }
 
 const srcs: []const []const u8 = &.{

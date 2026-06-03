@@ -3,24 +3,19 @@
     .version = "3.2.3-1",
     .fingerprint = 0xa98f7681c4b9d53c,
     .minimum_zig_version = "0.15.2",
-    .dependencies = .{
-        .harfbuzz = .{
-            .url = "git+https://github.com/allyourcodebase/harfbuzz#d055840ecefefcd57f5ddeb2fa8c83fafed1a40b",
-            .hash = "harfbuzz-14.1.0-Ip1VAuGZAAC1jdxPHOMPoHyi-50Hm_q4bveaVflELHGw",
-        },
-        .freetype = .{
-            .url = "git+https://github.com/allyourcodebase/freetype#884fd2235e6ae1ec4306eda30b3259f20930ed2e",
-            .hash = "freetype-2.14.3-C3-WdXSKAAB-kHs4qgRoeoFnRkNQn6M_SSlUGZ6ywgBQ",
-        },
-        .SDL = .{
-            .url = "git+https://github.com/castholm/sdl#c5ba24c694b5d520cdc1d029d8def398690d6894",
-            .hash = "sdl-0.4.2+3.4.4-SDL--kB3pQHKG_4zWG-pH04ZcZZj_IRF7dwMpxNVGwd6",
-        },
-        .SDL_ttf = .{
-            .url = "git+https://github.com/libsdl-org/SDL_ttf#release-3.2.2",
-            .hash = "N-V-__8AAF2JgAA_Y5Qzm3b226N8y7ivM-qFVpCo9NkbfO8Y",
-        },
-    },
+    .dependencies = .{ .harfbuzz = .{
+        .url = "git+https://github.com/allyourcodebase/harfbuzz#d055840ecefefcd57f5ddeb2fa8c83fafed1a40b",
+        .hash = "harfbuzz-14.1.0-Ip1VAuGZAAC1jdxPHOMPoHyi-50Hm_q4bveaVflELHGw",
+    }, .freetype = .{
+        .url = "git+https://github.com/allyourcodebase/freetype#884fd2235e6ae1ec4306eda30b3259f20930ed2e",
+        .hash = "freetype-2.14.3-C3-WdXSKAAB-kHs4qgRoeoFnRkNQn6M_SSlUGZ6ywgBQ",
+    }, .SDL = .{
+        .url = "git+https://github.com/castholm/sdl#c5ba24c694b5d520cdc1d029d8def398690d6894",
+        .hash = "sdl-0.4.2+3.4.4-SDL--kB3pQHKG_4zWG-pH04ZcZZj_IRF7dwMpxNVGwd6",
+    }, .SDL_ttf = .{
+        .url = "https://github.com/libsdl-org/SDL_ttf/archive/refs/tags/release-3.2.2.tar.gz",
+        .hash = "N-V-__8AAF2JgAA_Y5Qzm3b226N8y7ivM-qFVpCo9NkbfO8Y",
+    } },
     .paths = .{
         "build.zig",
         "build.zig.zon",
